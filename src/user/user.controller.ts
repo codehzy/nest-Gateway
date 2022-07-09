@@ -13,10 +13,14 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { VERSION_NEUTRAL } from '@nestjs/common';
 import { BusinessException } from './common/exceptions/business.exception';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly configService: ConfigService,
+  ) {}
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
@@ -51,5 +55,11 @@ export class UserController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.userService.remove(+id);
+  }
+
+  // 测试获取环境变量
+  @Get('getTestName')
+  getTestName() {
+    return this.configService.get('TEST_VALUE').name;
   }
 }
