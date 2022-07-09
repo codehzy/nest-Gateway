@@ -29,7 +29,7 @@ export class UserController {
   }
 
   @Get(':id')
-  @Version('2')
+  @Version([VERSION_NEUTRAL, '2'])
   findOne(@Param('id') id: string) {
     console.log(id);
     return this.userService.findOne(+id);
