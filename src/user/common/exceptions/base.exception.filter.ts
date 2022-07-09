@@ -1,4 +1,5 @@
 import { BusinessException } from './business.exception';
+import { FastifyReply, FastifyRequest } from 'fastify';
 import {
   ArgumentsHost,
   Catch,
@@ -13,8 +14,8 @@ import {
 export class AllExceptionFilter implements ExceptionFilter {
   catch(exception: Error, host: ArgumentsHost): any {
     const ctx = host.switchToHttp();
-    const response = ctx.getResponse();
-    const request = ctx.getRequest();
+    const response = ctx.getResponse<FastifyReply>();
+    const request = ctx.getRequest<FastifyRequest>();
 
     // 非HTTP 标准异常的处理
     response.status(HttpStatus.SERVICE_UNAVAILABLE).send({
@@ -31,8 +32,8 @@ export class AllExceptionFilter implements ExceptionFilter {
 export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
-    const response = ctx.getResponse();
-    const request = ctx.getRequest();
+    const response = ctx.getResponse<FastifyReply>();
+    const request = ctx.getRequest<FastifyRequest>();
     const status = exception.getStatus();
 
     // 处理业务异常
