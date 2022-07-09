@@ -12,6 +12,7 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { VERSION_NEUTRAL } from '@nestjs/common';
+import { BusinessException } from './common/exceptions/business.exception';
 
 @Controller('user')
 export class UserController {
@@ -25,6 +26,13 @@ export class UserController {
   @Get()
   @Version([VERSION_NEUTRAL, '1'])
   findAll() {
+    // 模拟错误请求
+    const a: any = {};
+    try {
+      console.log(a.b.c);
+    } catch (error) {
+      throw new BusinessException('你这个参数错了');
+    }
     return this.userService.findAll();
   }
 

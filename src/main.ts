@@ -5,6 +5,10 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
+import {
+  AllExceptionFilter,
+  HttpExceptionFilter,
+} from './user/common/exceptions/base.exception.filter';
 import { TransformInterceptor } from './user/common/interceptors/transform.interceptor';
 
 async function bootstrap() {
@@ -18,6 +22,8 @@ async function bootstrap() {
     type: VersioningType.URI,
   });
   app.useGlobalInterceptors(new TransformInterceptor());
+  // 全局异常拦截器
+  app.useGlobalFilters(new AllExceptionFilter(), new HttpExceptionFilter());
   await app.listen(3000);
 }
 bootstrap();
