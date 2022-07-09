@@ -6,10 +6,12 @@ import {
   Patch,
   Param,
   Delete,
+  Version,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { VERSION_NEUTRAL } from '@nestjs/common';
 
 @Controller('user')
 export class UserController {
@@ -21,12 +23,15 @@ export class UserController {
   }
 
   @Get()
+  @Version([VERSION_NEUTRAL, '1'])
   findAll() {
     return this.userService.findAll();
   }
 
   @Get(':id')
+  @Version('2')
   findOne(@Param('id') id: string) {
+    console.log(id);
     return this.userService.findOne(+id);
   }
 
